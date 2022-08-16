@@ -60,3 +60,15 @@ func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "%v", paste.File)
 }
+
+func (app *App) Home(w http.ResponseWriter, r *http.Request) {
+	home :=
+		`
+    gocatgo: another cool pastebin.
+
+    * Usage:
+      # cat file.txt | curl -F "file=@-" gocatgo.sh
+`
+
+	fmt.Fprintf(w, "%s", home)
+}

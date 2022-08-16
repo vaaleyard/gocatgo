@@ -25,6 +25,7 @@ func main() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", app.Upload).Methods("POST")
+	router.HandleFunc("/", app.Home).Methods("GET")
 	router.HandleFunc("/{shortid}", app.Fetch).Methods("GET")
 
 	server := &http.Server{
