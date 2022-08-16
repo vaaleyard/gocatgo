@@ -17,3 +17,7 @@ func (paste *Pastebin) New(db *gorm.DB) {
 func (paste *Pastebin) Get(db *gorm.DB) {
 	db.First(&paste)
 }
+
+func (paste *Pastebin) GetShortID(db *gorm.DB, shortid string) {
+	db.First(&paste, "short_id = ?", shortid)
+}

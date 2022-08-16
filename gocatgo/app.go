@@ -9,8 +9,9 @@ import (
 )
 
 type App struct {
-	DB   *gorm.DB
-	Host string
+	DB       *gorm.DB
+	Host     string
+	Alphabet string
 }
 
 func (app *App) initializeDB() error {
@@ -38,6 +39,8 @@ func (app *App) Run() error {
 	}
 	log.Println("Database migration completed")
 
+	app.Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	app.Host = "gocatgo.sh"
+
 	return nil
 }

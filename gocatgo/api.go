@@ -6,8 +6,8 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/aidarkhanov/nanoid"
 	"github.com/gorilla/mux"
-	"github.com/teris-io/shortid"
 	"github.com/vaaleyard/gocatgo/models"
 )
 
@@ -25,11 +25,27 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 	buf := bytes.NewBuffer(nil)
 	_, _ = io.Copy(buf, file)
 
-	// TODO: better new short id handling
-	shortid, err := shortid.Generate()
+	/*
+	   TODO:
+	   1. better new id handling
+	   2. check if it already exists
+	   3. create ids with size+1 when all ids with size is over (how ?)
+	*/
+	shortid, err := nanoid.Generate(app.Alphabet, 3)
 	if err != nil {
 		panic(err)
 	}
+
+	/*
+		result := models.Pastebin{}
+		result.GetShortID(app.DB, shortid)
+		if result.ShortID == "" {
+			log.Println("This ID is new, going with this one...")
+		} else {
+			panic("this id already exists, generating another one...")
+		}
+	*/
+
 	model := models.Pastebin{File: string(buf.Bytes()), ShortID: shortid}
 	model.New(app.DB)
 
