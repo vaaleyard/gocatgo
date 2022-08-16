@@ -9,10 +9,11 @@ import (
 )
 
 type App struct {
-	DB *gorm.DB
+	DB   *gorm.DB
+	Host string
 }
 
-func (app *App) Initialize() error {
+func (app *App) initializeDB() error {
 	dsn := "host=host user=postgres password=pwd dbname=dbname port=5432 sslmode=disable TimeZone=America/Sao_Paulo"
 
 	var err error
@@ -25,11 +26,10 @@ func (app *App) Initialize() error {
 }
 
 func (app *App) Run() error {
-	err := app.Initialize()
+	err := app.initializeDB()
 	if err != nil {
 		return err
 	}
-
 	log.Println("Connected to the database")
 
 	err = app.DB.AutoMigrate(&models.Pastebin{})
@@ -38,5 +38,6 @@ func (app *App) Run() error {
 	}
 	log.Println("Database migration completed")
 
+	app.Host = "gocatgo.sh"
 	return nil
 }

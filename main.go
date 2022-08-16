@@ -19,15 +19,16 @@ func main() {
 	flag.Parse()
 
 	app := gocatgo.App{}
-	app.Initialize()
-	app.Run()
+	if err := app.Run(); err != nil {
+		panic(err)
+	}
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", app.Upload).Methods("POST")
 	router.HandleFunc("/{shortid}", app.Fetch).Methods("GET")
 
 	server := &http.Server{
-		Addr: "0.0.0.0:8080",
+		Addr: "0.0.0.0:80",
 		// Good practice to set timeouts to avoid Slowloris attacks.
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
