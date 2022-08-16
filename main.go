@@ -24,6 +24,7 @@ func main() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", app.Upload).Methods("POST")
+	router.HandleFunc("/{shortid}", app.Fetch).Methods("GET")
 
 	server := &http.Server{
 		Addr: "0.0.0.0:8080",

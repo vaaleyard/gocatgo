@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/teris-io/shortid"
 	"github.com/vaaleyard/gocatgo/models"
 )
@@ -33,4 +34,13 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 	model.New(app.DB)
 
 	fmt.Fprintf(w, "Upload successful")
+}
+
+func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+	paste := models.Pastebin{ShortID: vars["shortid"]}
+	paste.Get(app.DB)
+
+	fmt.Fprintf(w, "%v", paste.File)
 }

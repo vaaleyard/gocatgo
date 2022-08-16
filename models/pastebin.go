@@ -13,3 +13,7 @@ type Pastebin struct {
 func (paste *Pastebin) New(db *gorm.DB) {
 	db.Create(&paste)
 }
+
+func (paste *Pastebin) Get(db *gorm.DB) {
+	db.First(&paste)
+}
