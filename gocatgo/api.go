@@ -2,8 +2,10 @@ package gocatgo
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/aidarkhanov/nanoid"
@@ -71,4 +73,13 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
 `
 
 	fmt.Fprintf(w, "%s", home)
+}
+
+func (app *App) Sha256(w http.ResponseWriter, r *http.Request) {
+	data, err := ioutil.ReadFile("gocatgo.bin")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Fprintf(w, "%x", sha256.Sum256(data))
 }
