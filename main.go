@@ -25,9 +25,9 @@ func main() {
 		Database: gocatgo.Database{
 			Host:     os.Getenv("DBHOST"),
 			User:     os.Getenv("DBUSER"),
+			Password: os.Getenv("DBPASSWORD"),
 			Name:     os.Getenv("DBNAME"),
 			Port:     os.Getenv("DBPORT"),
-			Password: os.Getenv("DBPASSWORD"),
 		},
 	}
 	if err := app.Run(); err != nil {
