@@ -70,13 +70,13 @@ func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) Home(w http.ResponseWriter, r *http.Request) {
-	home :=
+	home := fmt.Sprintf(
 		`
     gocatgo: another cool pastebin.
 
     * Usage:
-      # cat file.txt | curl -F "file=@-" gocatgo.sh
-`
+      # cat file.txt | curl -F "file=@-" %s
+`, app.Host)
 
 	fmt.Fprintf(w, "%s", home)
 }
