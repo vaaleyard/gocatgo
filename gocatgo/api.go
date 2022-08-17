@@ -27,26 +27,22 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 	buf := bytes.NewBuffer(nil)
 	_, _ = io.Copy(buf, file)
 
-	/*
-	   TODO:
-	   1. better new id handling
-	   2. check if it already exists
-	   3. create ids with size+1 when all ids with size is over (how ?)
-	*/
-	shortid, err := nanoid.Generate(app.Alphabet, 3)
-	if err != nil {
-		panic(err)
-	}
+	var shortid string
+	for {
+		// TODO: create ids with size+1 when all ids with size is over (how?)
+		shortid, err = nanoid.Generate(app.Alphabet, 3)
+		if err != nil {
+			panic(err)
+		}
 
-	/*
 		result := models.Pastebin{}
 		result.GetShortID(app.DB, shortid)
+
+		// shortid does not exist
 		if result.ShortID == "" {
-			log.Println("This ID is new, going with this one...")
-		} else {
-			panic("this id already exists, generating another one...")
+			break
 		}
-	*/
+	}
 
 	model := models.Pastebin{File: string(buf.Bytes()), ShortID: shortid}
 	model.New(app.DB)
