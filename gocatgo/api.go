@@ -52,7 +52,7 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 	model := models.Pastebin{File: string(encryptedFile), ShortID: shortid}
 	model.New(app.DB)
 
-	fmt.Fprintf(w, "http://%s/%s", app.Host, model.ShortID)
+	fmt.Fprintf(w, "http://%s/%s\n", app.Host, model.ShortID)
 }
 
 func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
