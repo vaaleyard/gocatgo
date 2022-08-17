@@ -44,10 +44,15 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	model := models.Pastebin{File: string(buf.Bytes()), ShortID: shortid}
+	encryptedFile, err := AESEncrypt(app.AESCipherkey, string(buf.Bytes()))
+	if err != nil {
+		panic(err)
+	}
+
+	model := models.Pastebin{File: string(encryptedFile), ShortID: shortid}
 	model.New(app.DB)
 
-	fmt.Fprintf(w, "http://%s/%s\n", app.Host, model.ShortID)
+	fmt.Fprintf(w, "http://%s/%s", app.Host, model.ShortID)
 }
 
 func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +61,12 @@ func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
 	paste := models.Pastebin{ShortID: vars["shortid"]}
 	paste.Get(app.DB)
 
-	fmt.Fprintf(w, "%v", paste.File)
+	plainTextFile, err := AESDecrypt(app.AESCipherkey, paste.File)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Fprintf(w, "%v", plainTextFile)
 }
 
 func (app *App) Home(w http.ResponseWriter, r *http.Request) {

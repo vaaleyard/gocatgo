@@ -2,3 +2,6 @@
 1. Generate short (I mean, short) URL IDs
 2. Store images (with limit size)
 3. Maybe encrypt database
+4. Change some options to get from environment variables
+5. Ability to create a paste with password, and be able to delete it if you have the password
+6. Improve return code and messages
