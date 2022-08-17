@@ -26,10 +26,11 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", app.Upload).Methods("POST")
 	router.HandleFunc("/", app.Home).Methods("GET")
+	router.HandleFunc("/sha256", app.Sha256).Methods("GET")
 	router.HandleFunc("/{shortid}", app.Fetch).Methods("GET")
 
 	server := &http.Server{
-		Addr: "0.0.0.0:80",
+		Addr: "0.0.0.0:8080",
 		// Good practice to set timeouts to avoid Slowloris attacks.
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
