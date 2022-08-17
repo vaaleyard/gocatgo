@@ -3,12 +3,12 @@ module github.com/vaaleyard/gocatgo
 go 1.19
 
 require (
+	github.com/aidarkhanov/nanoid v1.0.8
 	github.com/gorilla/mux v1.8.0
 	gorm.io/gorm v1.23.8
 )
 
 require (
-	github.com/aidarkhanov/nanoid v1.0.8 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -24,6 +24,5 @@ require (
 require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.4 // indirect
-	github.com/teris-io/shortid v0.0.0-20220617161101-71ec9f2aa569
 	gorm.io/driver/postgres v1.3.9
 )

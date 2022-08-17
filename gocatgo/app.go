@@ -14,15 +14,27 @@ import (
 	"gorm.io/gorm"
 )
 
+type Database struct {
+	Host     string
+	User     string
+	Password string
+	Name     string
+	Port     string
+}
+
 type App struct {
-	DB           *gorm.DB
-	Host         string
-	Alphabet     string
-	AESCipherkey []byte
+	DB             *gorm.DB
+	Host           string
+	Alphabet       string
+	AESCipherkey   []byte
+	BinaryFilename string
+	Database       Database
 }
 
 func (app *App) initializeDB() error {
-	dsn := "host=host user=postgres password=pwd dbname=dbname port=5432 sslmode=disable TimeZone=America/Sao_Paulo"
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s",
+		app.Database.Host, app.Database.User, app.Database.Password,
+		app.Database.Name, app.Database.Port)
 	var err error
 	app.DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

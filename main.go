@@ -19,8 +19,16 @@ func main() {
 	flag.Parse()
 
 	app := gocatgo.App{
-		Host:         "gocatgo.sh",
-		AESCipherkey: []byte(os.Getenv("GOCATGO_AES_KEY")),
+		Host:           "gcg.sh",
+		AESCipherkey:   []byte(os.Getenv("GOCATGO_AES_KEY")),
+		BinaryFilename: "gocatgo.bin",
+		Database: gocatgo.Database{
+			Host:     os.Getenv("DBHOST"),
+			User:     os.Getenv("DBUSER"),
+			Name:     os.Getenv("DBNAME"),
+			Port:     os.Getenv("DBPORT"),
+			Password: os.Getenv("DBPASSWORD"),
+		},
 	}
 	if err := app.Run(); err != nil {
 		panic(err)

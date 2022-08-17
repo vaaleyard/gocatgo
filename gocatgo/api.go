@@ -82,7 +82,7 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) Sha256(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadFile("gocatgo.bin")
+	data, err := ioutil.ReadFile(app.BinaryFilename)
 	if err != nil {
 		panic(err)
 	}
