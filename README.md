@@ -25,8 +25,15 @@ curl -F "file=@file.txt" gcg.sh
 echo "some cool code" | curl -F "file=@-" gcg.sh
 ```
 
+## Privacy, Encryption and Transparency
+Everything is encrypted. See [wiki](https://github.com/vaaleyard/gocatgo/wiki).
+
 ## Contribution
-See [Contributing.md](./CONTRIBUTING.md)
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## FAQ
+1. How do I know the code running is the same as the repository?  
+  **Answer**: I've created an URL so you can check the sha256 of current code running: gcg.sh/sha256
 
 ## License
 [MIT](./LICENSE)
