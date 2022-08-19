@@ -1,7 +1,8 @@
 <div align="center">
 
 <h1> GoCatGo </h1>
-GoCatGo is another pastebin tool with a super focus on transparency<br>
+
+<a href="https://gcg.sh">GoCatGo</a> is another pastebin tool with a super focus on transparency<br>
 
 <br>
 
