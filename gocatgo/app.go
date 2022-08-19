@@ -4,9 +4,11 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 
 	"github.com/vaaleyard/gocatgo/models"
@@ -109,4 +111,13 @@ func AESDecrypt(key []byte, encryptedMessage string) (decoded string, err error)
 	}
 
 	return fmt.Sprintf("%s", plainText), nil
+}
+
+func (app *App) GetSha256() [32]byte {
+	data, err := ioutil.ReadFile(app.BinaryFilename)
+	if err != nil {
+		panic(err)
+	}
+
+	return sha256.Sum256(data)
 }

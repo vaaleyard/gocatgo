@@ -2,10 +2,8 @@ package gocatgo
 
 import (
 	"bytes"
-	"crypto/sha256"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/aidarkhanov/nanoid"
@@ -79,8 +77,9 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
      $ cat file.txt | curl -F "file=@-" %[1]s
        %[1]s/Rit
 
+     # will output current binary sha256
      $ curl %[1]s/sha256
-       # will output current binary sha256
+       %[2]x
 
    * Examples:
      # With a file
@@ -94,16 +93,11 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
         https://github.com/vaaleyard/gocatgo/
    * Roadmap of future development is also available:
         https://github.com/vaaleyard/gocatgo/blob/main/CONTRIBUTING.md#todo
-	`, app.Host)
+	`, app.Host, app.GetSha256())
 
 	fmt.Fprintf(w, "%s", home)
 }
 
 func (app *App) Sha256(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadFile(app.BinaryFilename)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Fprintf(w, "%x", sha256.Sum256(data))
+	fmt.Fprintf(w, "%x", app.GetSha256())
 }
