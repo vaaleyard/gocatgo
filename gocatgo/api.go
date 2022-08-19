@@ -70,13 +70,31 @@ func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) Home(w http.ResponseWriter, r *http.Request) {
+
 	home := fmt.Sprintf(
 		`
-    gocatgo: another cool pastebin.
+   gocatgo: another cool pastebin.
 
-    * Usage:
-      # cat file.txt | curl -F "file=@-" %s
-`, app.Host)
+   * Usage:
+     $ cat file.txt | curl -F "file=@-" %[1]s
+       %[1]s/Rit
+
+     $ curl %[1]s/sha256
+       # will output current binary sha256
+
+   * Examples:
+     # With a file
+       $ cat file.txt | curl -F "file=@-" %[1]s
+     # or
+       $ curl -F "file=@file.txt" %[1]s
+     # Passing any string
+       $ echo "some cool code" | curl -F "file=@-" %[1]s
+
+   * GoCatGo is open source, you check it here:
+        https://github.com/vaaleyard/gocatgo/
+   * Roadmap of future development is also available:
+        https://github.com/vaaleyard/gocatgo/blob/main/CONTRIBUTING.md#todo
+	`, app.Host)
 
 	fmt.Fprintf(w, "%s", home)
 }
