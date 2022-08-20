@@ -26,6 +26,11 @@ curl -F "file=@file.txt" gcg.sh
 echo "some cool code" | curl -F "file=@-" gcg.sh
 ```
 
+```bash
+# Upload images
+curl -F "file=@image.png" gcg.sh
+```
+
 ## Privacy, Encryption and Transparency
 Everything is encrypted. See [wiki](https://github.com/vaaleyard/gocatgo/wiki).
 
