@@ -5,10 +5,12 @@ go 1.19
 require (
 	github.com/aidarkhanov/nanoid v1.0.8
 	github.com/gorilla/mux v1.8.0
+	github.com/throttled/throttled/v2 v2.9.1
 	gorm.io/gorm v1.23.8
 )
 
 require (
+	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
