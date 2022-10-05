@@ -34,6 +34,39 @@ curl -F "file=@image.png" gcg.sh
 ## Privacy, Encryption and Transparency
 Everything is encrypted. See [wiki](https://github.com/vaaleyard/gocatgo/wiki).
 
+## Local Development
+
+### Running locally
+
+To run locally, a simple database is required (I'm using PostgreSQL, but since it's managed by an ORM, I think MySQL will also work).
+This database is required because it's where all the user pastes are stored. It's not saved in the server disk like others programs do.
+After creating the database, some environment variables are needed to run the program:
+
+```bash
+export GOCATGO_AES_KEY='passphrasewhichneedstobe32bytes!'
+export DBHOST=your.database.hostname
+export DBUSER=your.database.username
+export DBPASSWORD=your.dabtabase.password
+export DBNAME=your.dabtabase.name
+export DBPORT=5432
+```
+
+Then, you can run the code:
+
+```bash
+go run .
+# or
+go build -o api && ./api
+```
+
+### Running via Docker
+
+Ensure you have [Docker Compose](https://docs.docker.com/compose/) installed.
+
+Run `docker compose build` to build the images.
+
+Run `docker compose up` to create and start your containers.
+
 ## Contribution
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
