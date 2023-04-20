@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./docker
+    environment:
+      GOCATGO_AES_KEY: passphrasewhichneedstobe32bytes!
+      DBHOST: db
+      DBUSER: gocatgo
+      DBPASSWORD: gocatgo
+      DBNAME: gocatgo
+      DBPORT: 5432
+    links:
+      - db
+    ports:
+      - 8080:8080
+    networks:
+      - gocatgo
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: gocatgo
+      POSTGRES_USER: gocatgo
+      POSTGRES_PASSWORD: gocatgo
+    ports:
+      - 5433:5432
+    networks:
+      - gocatgo
+    volumes:
+      - data:/var/lib/postgresql/data
+    healthcheck:
+      test: "exit 0"
+
+networks:
+  gocatgo:
+    name: gocatgo
+
+volumes:
+  data:
