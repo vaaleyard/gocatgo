@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -84,33 +83,6 @@ func AESEncrypt(key []byte, message string) (encoded string, err error) {
 	}
 
 	return fmt.Sprintf("%x", gcm.Seal(nonce, nonce, text, nil)), nil
-}
-
-func AESDecrypt(key []byte, encryptedMessage string) (decoded string, err error) {
-	messageHexDecoded, _ := hex.DecodeString(encryptedMessage)
-
-	aesCipher, err := aes.NewCipher(key)
-	if err != nil {
-		return
-	}
-
-	gcm, err := cipher.NewGCM(aesCipher)
-	if err != nil {
-		return
-	}
-
-	gcmNonceSize := gcm.NonceSize()
-	if len(messageHexDecoded) < gcmNonceSize {
-		return
-	}
-
-	nonce, messageHexDecoded := messageHexDecoded[:gcmNonceSize], messageHexDecoded[gcmNonceSize:]
-	plainText, err := gcm.Open(nil, nonce, messageHexDecoded, nil)
-	if err != nil {
-		return
-	}
-
-	return fmt.Sprintf("%s", plainText), nil
 }
 
 func (app *App) GetSha256() [32]byte {
