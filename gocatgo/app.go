@@ -1,12 +1,8 @@
 package gocatgo
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
-	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 
@@ -61,28 +57,6 @@ func (app *App) Run() error {
 	app.Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 	return nil
-}
-
-func AESEncrypt(key []byte, message string) (encoded string, err error) {
-	text := []byte(message)
-
-	aesCipher, err := aes.NewCipher(key)
-	if err != nil {
-		return
-	}
-
-	gcm, err := cipher.NewGCM(aesCipher)
-	if err != nil {
-		return
-	}
-
-	nonce := make([]byte, gcm.NonceSize())
-
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		return
-	}
-
-	return fmt.Sprintf("%x", gcm.Seal(nonce, nonce, text, nil)), nil
 }
 
 func (app *App) GetSha256() [32]byte {
