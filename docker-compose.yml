@@ -3,9 +3,8 @@ version: '3.8'
 services:
   api:
     build:
-      context: ./docker
+      context: .
     environment:
-      GOCATGO_AES_KEY: passphrasewhichneedstobe32bytes!
       DBHOST: db
       DBUSER: gocatgo
       DBPASSWORD: gocatgo
