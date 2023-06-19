@@ -44,8 +44,14 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 
 	model := models.Pastebin{File: string(buf.Bytes()), ShortID: shortid}
 	model.New(app.DB)
-
-	fmt.Fprintf(w, "https://%s/%s\n", app.Host, model.ShortID)
+	// I don't think there is a better way to do this
+	var Scheme string
+	if r.Header.Get("X-Forwarded-For") == "" {
+		Scheme = "http"
+	} else {
+		Scheme = r.Header.Get("X-Forwarded-Proto")
+	}
+	fmt.Fprintf(w, "%s://%s/%s\n", Scheme, r.Host, model.ShortID)
 }
 
 func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +64,13 @@ func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) Home(w http.ResponseWriter, r *http.Request) {
-
+	// I don't think there is a better way to do this
+	var Scheme string
+	if r.Header.Get("X-Forwarded-For") == "" {
+		Scheme = "http"
+	} else {
+		Scheme = r.Header.Get("X-Forwarded-Proto")
+	}
 	home := fmt.Sprintf(
 		`
    gocatgo: another cool pastebin.
@@ -83,7 +95,7 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
         https://github.com/vaaleyard/gocatgo/
    * Roadmap of future development is also available:
         https://github.com/vaaleyard/gocatgo/blob/main/CONTRIBUTING.md#todo
-	`, app.Host, app.GetSha256())
+		`, Scheme+"://"+r.Host, app.GetSha256())
 
 	fmt.Fprintf(w, "%s", home)
 }
