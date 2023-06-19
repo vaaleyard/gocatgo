@@ -40,7 +40,6 @@ func main() {
 
 	app := gocatgo.App{
 		Host:           "gcg.sh",
-		AESCipherkey:   []byte(os.Getenv("GOCATGO_AES_KEY")),
 		BinaryFilename: "gocatgo.bin",
 		Database: gocatgo.Database{
 			Host:     os.Getenv("DBHOST"),
