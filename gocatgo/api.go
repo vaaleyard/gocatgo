@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"path"
 
 	"github.com/aidarkhanov/nanoid"
 	"github.com/gorilla/mux"
@@ -14,7 +15,7 @@ import (
 func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 	// The argument to FormFile must match the name attribute
 	// of the file input on the frontend
-	file, _, err := r.FormFile("file")
+	file, fileheader, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -32,6 +33,7 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		shortid = shortid + path.Ext(fileheader.Filename)
 
 		result := models.Pastebin{}
 		result.GetShortID(app.DB, shortid)
@@ -42,7 +44,7 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	model := models.Pastebin{File: string(buf.Bytes()), ShortID: shortid}
+	model := models.Pastebin{File: buf.Bytes(), ShortID: shortid}
 	model.New(app.DB)
 	// I don't think there is a better way to do this
 	var Scheme string
@@ -60,7 +62,7 @@ func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
 	paste := models.Pastebin{ShortID: vars["shortid"]}
 	paste.Get(app.DB)
 
-	fmt.Fprintf(w, "%v", paste.File)
+	fmt.Fprintf(w, "%v", string(paste.File))
 }
 
 func (app *App) Home(w http.ResponseWriter, r *http.Request) {
