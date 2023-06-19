@@ -23,7 +23,6 @@ type App struct {
 	DB             *gorm.DB
 	Host           string
 	Alphabet       string
-	AESCipherkey   []byte
 	BinaryFilename string
 	Database       Database
 }

@@ -5,7 +5,6 @@ services:
     build:
       context: ./docker
     environment:
-      GOCATGO_AES_KEY: passphrasewhichneedstobe32bytes!
       DBHOST: db
       DBUSER: gocatgo
       DBPASSWORD: gocatgo

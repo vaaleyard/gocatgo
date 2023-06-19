@@ -6,7 +6,6 @@ To run locally, a simple database is required (I'm using PostgreSQL, but since i
 This database is required because it's where all the user pastes are stored. It's not saved in the server disk like others programs do.
 After creating the database, some environment variables is needed to run the program:
 ```bash
-export GOCATGO_AES_KEY='passphrasewhichneedstobe32bytes!'
 export DBHOST=your.database.hostname
 export DBUSER=your.database.username
 export DBPASSWORD=your.dabtabase.password
