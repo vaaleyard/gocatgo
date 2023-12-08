@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM docker.io/golang:alpine AS build
+FROM --platform=$BUILDPLATFORM docker.io/golang:1.21-alpine AS build
 
 WORKDIR /src
 

@@ -14,6 +14,7 @@ services:
       - db
     ports:
       - 8080:8080
+    restart: always
     networks:
       - gocatgo
     depends_on:
@@ -21,17 +22,18 @@ services:
         condition: service_healthy
 
   db:
-    image: postgres
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: gocatgo
       POSTGRES_USER: gocatgo
       POSTGRES_PASSWORD: gocatgo
     ports:
-      - 5433:5432
+      - 5432:5432
+    restart: always
     networks:
       - gocatgo
     volumes:
-      - data:/var/lib/postgresql/data
+      - /data/:/var/lib/postgresql/data
     healthcheck:
       test: "exit 0"
 
