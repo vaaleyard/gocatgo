@@ -7,7 +7,7 @@ import (
 type Pastebin struct {
 	gorm.Model
 	ShortID string `gorm:"primaryKey"`
-	File    string
+	File    []byte
 }
 
 func (paste *Pastebin) New(db *gorm.DB) {

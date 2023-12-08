@@ -57,7 +57,7 @@ func main() {
 	router.HandleFunc("/", app.Upload).Methods("POST")
 	router.HandleFunc("/", app.Home).Methods("GET")
 	router.HandleFunc("/sha256", app.Sha256).Methods("GET")
-	router.HandleFunc("/{shortid:[A-Za-z0-9]+}", app.Fetch).Methods("GET")
+	router.HandleFunc("/{shortid:[A-Za-z0-9]+(?:\\..*)?}", app.Fetch).Methods("GET")
 
 	server := &http.Server{
 		Addr: "0.0.0.0:8080",
