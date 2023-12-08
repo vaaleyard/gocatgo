@@ -31,8 +31,8 @@ echo "some cool code" | curl -F "file=@-" gcg.sh
 curl -F "file=@image.png" gcg.sh
 ```
 
-## Privacy, Encryption and Transparency
-Everything is encrypted. See [wiki](https://github.com/vaaleyard/gocatgo/wiki).
+## Transparency
+See [wiki](https://github.com/vaaleyard/gocatgo/wiki).
 
 ## Contribution
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
