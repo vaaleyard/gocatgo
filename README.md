@@ -2,7 +2,7 @@
 
 <h1> GoCatGo </h1>
 
-<a href="https://gcg.sh">GoCatGo</a> is another pastebin tool with a super focus on transparency<br>
+<a href="https://gcg.sh">GoCatGo</a> is another simple pastebin tool.<br>
 
 <br>
 
@@ -49,7 +49,9 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## FAQ
 1. How do I know the code running is the same as the repository?  
-  **Answer**: I've created an URL so you can check the sha256 of current code running: gcg.sh/sha256
+   I've created an URL so you can check the sha256 of current code running: gcg.sh/sha256
+2. How can I delete a paste I've created?  
+   For now, you can request me at `contact@gcg.sh`. In the future it will be implemented.
 
 ## License
 [MIT](./LICENSE)
