@@ -8,8 +8,8 @@ After creating the database, some environment variables is needed to run the pro
 ```bash
 export DBHOST=your.database.hostname
 export DBUSER=your.database.username
-export DBPASSWORD=your.dabtabase.password
-export DBNAME=your.dabtabase.name
+export DBPASSWORD=your.database.password
+export DBNAME=your.database.name
 export DBPORT=5432
 ```
 
@@ -31,5 +31,5 @@ go build -o api && ./api
 2. Change some options to get from environment variables
 3. Ability to create a paste with password, and be able to delete it if you have the password
 4. Improve return code and messages
-5. Provide the go binary to see the shasum
-6. Make a docker image
+5. Is the sha256 a good way of verify the code?
+6. Probably in the future a retention period will be necessary
