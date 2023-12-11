@@ -78,26 +78,24 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
    gocatgo: another cool pastebin.
 
    * Usage:
-     $ cat file.txt | curl -F "file=@-" %[1]s
-       %[1]s/Rit
-
-     # will output current binary sha256
-     $ curl %[1]s/sha256
-       %[2]x
-
-   * Examples:
-     # With a file
+     # Manually
        $ cat file.txt | curl -F "file=@-" %[1]s
-     # or
+         %[1]s/Rit
+     # Or
        $ curl -F "file=@file.txt" %[1]s
      # Passing any string
        $ echo "some cool code" | curl -F "file=@-" %[1]s
 
+   * Alias:
+     # Run
+       $ echo "$(curl %[1]s/alias)" >> ~/.bashrc
+     # Use
+       $ cat file.txt | gcg
+
    * GoCatGo is open source, you check it here:
         https://github.com/vaaleyard/gocatgo/
-   * Roadmap of future development is also available:
-        https://github.com/vaaleyard/gocatgo/blob/main/CONTRIBUTING.md#todo
-		`, Scheme+"://"+r.Host, app.GetSha256())
+`,
+        Scheme+"://"+r.Host)
 
 	fmt.Fprintf(w, "%s", home)
 }
