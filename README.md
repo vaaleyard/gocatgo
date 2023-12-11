@@ -32,8 +32,10 @@ curl -F "file=@image.png" gcg.sh
 ```
 
 ```bash
-# With a bash function
-gcg image.png
+# with an alias
+echo file.txt | gcg
+# or with a function
+gcg file.txt
 ```
 
 ## Alias
