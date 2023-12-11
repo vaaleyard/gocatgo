@@ -41,5 +41,3 @@ networks:
   gocatgo:
     name: gocatgo
 
-volumes:
-  data:
