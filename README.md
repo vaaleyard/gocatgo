@@ -31,14 +31,17 @@ echo "some cool code" | curl -F "file=@-" gcg.sh
 curl -F "file=@image.png" gcg.sh
 ```
 
+```bash
+# With a bash function
+gcg image.png
+```
+
 ## Alias
 You can add gcg alias to your shell to make it easier to upload files:
 ```bash
-echo 'alias gcg="curl https://gcg.sh -F file=@-"' >> ~/.bashrc
-
-# or, easier than that
-
 echo "$(curl https://gcg.sh/alias)" >> ~/.bashrc
+# or, to preserve the filetype
+echo "$(curl https://gcg.sh/function)" >> ~/.bashrc
 ```
 
 ## Transparency
