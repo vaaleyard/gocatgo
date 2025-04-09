@@ -6,9 +6,9 @@ import (
 	"io"
 	"net/http"
 	"path"
+	"regexp"
 
 	"github.com/aidarkhanov/nanoid"
-	"github.com/gorilla/mux"
 	"github.com/vaaleyard/gocatgo/models"
 )
 
@@ -57,9 +57,16 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	shortid := r.PathValue("shortid")
 
-	paste := models.Pastebin{ShortID: vars["shortid"]}
+	// block unusual paths
+	re := regexp.MustCompile(`^[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)?$`)
+	if !re.MatchString(shortid) {
+		http.Error(w, "Invalid file name", http.StatusBadRequest)
+		return
+	}
+
+	paste := models.Pastebin{ShortID: shortid}
 	paste.Get(app.DB)
 
 	fmt.Fprintf(w, "%v", string(paste.File))
@@ -95,7 +102,7 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
    * GoCatGo is open source, you check it here:
         https://github.com/vaaleyard/gocatgo/
 `,
-        Scheme+"://"+r.Host)
+		Scheme+"://"+r.Host)
 
 	fmt.Fprintf(w, "%s", home)
 }

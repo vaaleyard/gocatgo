@@ -1,6 +1,6 @@
 module github.com/vaaleyard/gocatgo
 
-go 1.19
+go 1.24
 
 require (
 	github.com/aidarkhanov/nanoid v1.0.8
