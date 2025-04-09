@@ -7,7 +7,7 @@ services:
       DBUSER: gocatgo
       DBPASSWORD: gocatgo
       DBNAME: gocatgo
-      DBPORT: 5432
+      DBPORT: 3306
     links:
       - db
     ports:
@@ -20,20 +20,25 @@ services:
         condition: service_healthy
 
   db:
-    image: postgres:16-alpine
+    image: mysql:9.2.0
     environment:
-      POSTGRES_DB: gocatgo
-      POSTGRES_USER: gocatgo
-      POSTGRES_PASSWORD: gocatgo
+      MYSQL_DATABASE: gocatgo
+      MYSQL_ROOT_PASSWORD: gocatgoadmin
+      MYSQL_USER: gocatgo
+      MYSQL_PASSWORD: gocatgo
     ports:
-      - 5432:5432
+      - 3306:3306
     restart: always
     networks:
       - gocatgo
-    volumes:
-      - /data/postgresql/:/var/lib/postgresql/data
+    # volumes:
+    #   - ./data/postgresql/:/var/lib/postgresql/data
     healthcheck:
-      test: "exit 0"
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 2
+      start_period: 0s
 
 networks:
   gocatgo:

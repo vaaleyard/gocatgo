@@ -7,7 +7,7 @@ import (
 	"log"
 
 	"github.com/vaaleyard/gocatgo/models"
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -28,11 +28,12 @@ type App struct {
 }
 
 func (app *App) initializeDB() error {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s",
-		app.Database.Host, app.Database.User, app.Database.Password,
-		app.Database.Name, app.Database.Port)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		app.Database.User, app.Database.Password, app.Database.Host,
+		app.Database.Port, app.Database.Name)
+
 	var err error
-	app.DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	app.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return err
 	}
