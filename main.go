@@ -34,8 +34,7 @@ func main() {
 	router.HandleFunc("GET /{shortid}", app.Fetch)
 
 	server := &http.Server{
-		Addr: "0.0.0.0:8080",
-		// Good practice to set timeouts to avoid Slowloris attacks.
+		Addr:         "0.0.0.0:8080",
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
 		IdleTimeout:  time.Second * 60,
@@ -48,7 +47,7 @@ func main() {
 
 	// Run server in goroutine so it doesn't block
 	go func() {
-		log.Println("Server listening on :8080")
+		log.Println("Server listening on " + server.Addr)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Listen error: %v", err)
 		}
