@@ -3,8 +3,8 @@ package gocatgo
 import (
 	"crypto/sha256"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/vaaleyard/gocatgo/models"
 	"gorm.io/driver/mysql"
@@ -60,7 +60,7 @@ func (app *App) Run() error {
 }
 
 func (app *App) GetSha256() [32]byte {
-	data, err := ioutil.ReadFile(app.BinaryFilename)
+	data, err := os.ReadFile(app.BinaryFilename)
 	if err != nil {
 		panic(err)
 	}
