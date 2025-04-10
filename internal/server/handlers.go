@@ -117,7 +117,7 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
        $ echo "some cool code" | curl -F "file=@-" %[1]s
 
    * Alias:
-     # New
+     # Run
        $ echo "$(curl %[1]s/alias)" >> ~/.bashrc
      # Use
        $ cat file.txt | gcg
