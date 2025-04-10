@@ -1,18 +1,14 @@
 services:
   api:
+    restart: always
     build:
       context: .
-    environment:
-      DBHOST: db
-      DBUSER: gocatgo
-      DBPASSWORD: gocatgo
-      DBNAME: gocatgo
-      DBPORT: 3306
+    env_file:
+      - .env
     links:
       - db
     ports:
       - 8080:8080
-    restart: always
     networks:
       - gocatgo
     depends_on:
@@ -20,25 +16,20 @@ services:
         condition: service_healthy
 
   db:
-    image: mysql:9.2.0
+    image: postgres:17.4-alpine
+    restart: on-failure:3
     environment:
-      MYSQL_DATABASE: gocatgo
-      MYSQL_ROOT_PASSWORD: gocatgoadmin
-      MYSQL_USER: gocatgo
-      MYSQL_PASSWORD: gocatgo
+      POSTGRES_DB: gocatgo
+      POSTGRES_USER: gocatgo
+      POSTGRES_PASSWORD: gocatgo
     ports:
-      - 3306:3306
-    restart: always
+      - 5432:5432
     networks:
       - gocatgo
-    # volumes:
-    #   - ./data/postgresql/:/var/lib/postgresql/data
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-      interval: 5s
-      timeout: 3s
-      retries: 2
-      start_period: 0s
+      test: "exit 0"
 
 networks:
   gocatgo:

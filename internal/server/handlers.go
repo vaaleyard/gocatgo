@@ -1,15 +1,18 @@
-package gocatgo
+package server
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/vaaleyard/gocatgo/internal/repository"
 	"io"
+	"log/slog"
 	"net/http"
 	"path"
+	"regexp"
 
 	"github.com/aidarkhanov/nanoid"
-	"github.com/gorilla/mux"
-	"github.com/vaaleyard/gocatgo/models"
 )
 
 func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
@@ -20,32 +23,47 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
 	defer file.Close()
 
 	buf := bytes.NewBuffer(nil)
 	_, _ = io.Copy(buf, file)
 
-	var shortid string
+	ctx := r.Context()
+	queries := repository.New(app.DB)
+
+	var fileID string
 	for {
 		// TODO: create ids with size+1 when all ids with size is over (how?)
-		shortid, err = nanoid.Generate(app.Alphabet, 3)
+		fileID, err = nanoid.Generate(app.Alphabet, 3)
 		if err != nil {
 			panic(err)
 		}
-		shortid = shortid + path.Ext(fileheader.Filename)
+		fileID = fileID + path.Ext(fileheader.Filename)
 
-		result := models.Pastebin{}
-		result.GetShortID(app.DB, shortid)
+		paste, err := queries.GetPaste(ctx, fileID)
+		if err != nil {
+			var pgErr *pgconn.PgError
+			if errors.As(err, &pgErr) {
+				slog.Warn(pgErr.Message, pgErr.Code)
+				return
+			}
+		}
 
-		// shortid does not exist
-		if result.ShortID == "" {
+		if paste.FileID == "" {
 			break
 		}
 	}
 
-	model := models.Pastebin{File: buf.Bytes(), ShortID: shortid}
-	model.New(app.DB)
+	err = queries.CreatePaste(ctx, repository.CreatePasteParams{
+		FileID:      fileID,
+		FileContent: buf.Bytes(),
+	})
+	if err != nil {
+		http.Error(w, "failed to create it in database, please try again: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	slog.Info("File " + fileID + " has been created")
+
 	// I don't think there is a better way to do this
 	var Scheme string
 	if r.Header.Get("X-Forwarded-For") == "" {
@@ -53,16 +71,28 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 	} else {
 		Scheme = r.Header.Get("X-Forwarded-Proto")
 	}
-	fmt.Fprintf(w, "%s://%s/%s\n", Scheme, r.Host, model.ShortID)
+	fmt.Fprintf(w, "%s://%s/%s\n", Scheme, r.Host, fileID)
 }
 
-func (app *App) Fetch(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+func (app *App) Get(w http.ResponseWriter, r *http.Request) {
+	fileID := r.PathValue("fileid")
 
-	paste := models.Pastebin{ShortID: vars["shortid"]}
-	paste.Get(app.DB)
+	// block unusual paths
+	re := regexp.MustCompile(`^[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)?$`)
+	if !re.MatchString(fileID) {
+		http.Error(w, "Invalid file name", http.StatusBadRequest)
+		return
+	}
 
-	fmt.Fprintf(w, "%v", string(paste.File))
+	ctx := r.Context()
+	queries := repository.New(app.DB)
+	paste, err := queries.GetPaste(ctx, fileID)
+	if err != nil {
+		http.Error(w, "failed to fetch URL, please try again"+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	fmt.Fprintf(w, "%v", string(paste.FileContent))
 }
 
 func (app *App) Home(w http.ResponseWriter, r *http.Request) {
@@ -95,7 +125,7 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
    * GoCatGo is open source, you check it here:
         https://github.com/vaaleyard/gocatgo/
 `,
-        Scheme+"://"+r.Host)
+		Scheme+"://"+r.Host)
 
 	fmt.Fprintf(w, "%s", home)
 }
