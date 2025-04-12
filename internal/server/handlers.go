@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/aidarkhanov/nanoid"
 	"github.com/alexliesenfeld/health"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/vaaleyard/gocatgo/internal/repository"
 	"io"
@@ -89,8 +90,12 @@ func (app *App) Get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	queries := repository.New(app.DB)
 	paste, err := queries.GetPaste(ctx, fileID)
+	if errors.As(err, &pgx.ErrNoRows) {
+		http.Error(w, "file not found", http.StatusNotFound)
+		return
+	}
 	if err != nil {
-		http.Error(w, "failed to fetch URL, please try again"+err.Error(), http.StatusBadRequest)
+		http.Error(w, "failed to fetch URL, please contact the administrator: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
