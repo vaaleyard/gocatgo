@@ -15,6 +15,7 @@ func Run(app *App) error {
 	router := http.NewServeMux()
 	router.HandleFunc("GET /", app.Home)
 	router.HandleFunc("POST /", app.Upload)
+	router.HandleFunc("GET /healthcheck", app.Healthcheck())
 	router.HandleFunc("GET /sha256", app.Sha256)
 	router.HandleFunc("GET /{fileid}", app.Get)
 

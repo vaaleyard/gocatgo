@@ -19,7 +19,7 @@ func NewApp() *App {
 	}
 }
 
-func (app *App) GetSha256() [32]byte {
+func (app *App) getBinarySha256() [32]byte {
 	data, err := os.ReadFile(app.BinaryFilename)
 	if err != nil {
 		panic(err)

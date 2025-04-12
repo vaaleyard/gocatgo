@@ -2,8 +2,11 @@ package server
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
+	"github.com/aidarkhanov/nanoid"
+	"github.com/alexliesenfeld/health"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/vaaleyard/gocatgo/internal/repository"
 	"io"
@@ -11,8 +14,7 @@ import (
 	"net/http"
 	"path"
 	"regexp"
-
-	"github.com/aidarkhanov/nanoid"
+	"time"
 )
 
 func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
@@ -131,5 +133,24 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) Sha256(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "%x", app.GetSha256())
+	fmt.Fprintf(w, "%x", app.getBinarySha256())
+}
+
+func (app *App) Healthcheck() http.HandlerFunc {
+	return health.NewHandler(
+		health.NewChecker(
+			health.WithCacheDuration(1*time.Second),
+			health.WithTimeout(10*time.Second),
+
+			health.WithCheck(health.Check{
+				Name:    "database",
+				Timeout: 2 * time.Second,
+				Check:   app.DB.Ping,
+			}),
+
+			health.WithStatusListener(func(ctx context.Context, state health.CheckerState) {
+				slog.Info(fmt.Sprintf("Health status changed to %s", state.Status))
+			}),
+		),
+	)
 }
