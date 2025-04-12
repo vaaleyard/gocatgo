@@ -2,11 +2,13 @@
 
 <h1> GoCatGo </h1>
 
-<a href="https://gcg.sh">GoCatGo</a> is another simple pastebin tool.<br>
+[GoCatGo](https://gcg.sh/) is another simple pastebin tool.<br>
+You can check its [uptime](https://status.gcg.sh/)! <br>
 
 <br>
 
-![uptime](https://status.essia.dev/api/badge/2/uptime/24) ![lines of code](https://sloc.xyz/github/vaaleyard/gocatgo) ![Code Size](https://img.shields.io/github/languages/code-size/vaaleyard/gocatgo) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+
+![uptime](https://status.gcg.sh/api/badge/12/uptime) ![lines of code](https://sloc.xyz/github/vaaleyard/gocatgo) ![Code Size](https://img.shields.io/github/languages/code-size/vaaleyard/gocatgo) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
 </div> 
 
@@ -59,7 +61,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## FAQ
 1. How do I know the code running is the same as the repository?  
-   I've created a URL so you can check the sha256 of current code running: [gcg.sh/256](https://gcg.sh/256)  
+   I've created a URL so you can check the sha256 of current code running: [gcg.sh/sha256](https://gcg.sh/sha256)  
 2. How can I delete a paste I've created?  
    For now, you can request me at `contact@gcg.sh`. In the future it will be implemented.
 
