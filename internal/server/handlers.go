@@ -5,17 +5,18 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/aidarkhanov/nanoid"
-	"github.com/alexliesenfeld/health"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgconn"
-	"github.com/vaaleyard/gocatgo/internal/repository"
 	"io"
 	"log/slog"
 	"net/http"
 	"path"
 	"regexp"
 	"time"
+
+	"github.com/aidarkhanov/nanoid"
+	"github.com/alexliesenfeld/health"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/vaaleyard/gocatgo/internal/repository"
 )
 
 func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +48,7 @@ func (app *App) Upload(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			var pgErr *pgconn.PgError
 			if errors.As(err, &pgErr) {
-				slog.Warn(pgErr.Message, pgErr.Code)
+				slog.Warn("error connecting to database: ", pgErr.Message, pgErr.Code)
 				return
 			}
 		}
@@ -90,7 +91,7 @@ func (app *App) Get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	queries := repository.New(app.DB)
 	paste, err := queries.GetPaste(ctx, fileID)
-	if errors.As(err, &pgx.ErrNoRows) {
+	if errors.Is(err, pgx.ErrNoRows) {
 		http.Error(w, "file not found", http.StatusNotFound)
 		return
 	}

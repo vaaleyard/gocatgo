@@ -31,7 +31,7 @@ func Run(app *App) error {
 	go func() {
 		slog.Info("Server listening on " + server.Addr)
 		if err := server.ListenAndServe(); err != nil {
-			slog.Error("failed to start server: ", err)
+			slog.Error(fmt.Sprintf("failed to start server: %v", err))
 		}
 	}()
 
