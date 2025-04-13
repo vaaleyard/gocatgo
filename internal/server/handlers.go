@@ -130,7 +130,9 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
      # Use
        $ gcg file.txt
 
-   * GoCatGo is open source, you check it here:
+   * You can check gcg uptime here: https://status.gcg.sh
+
+   * GoCatGo is open source:
         https://github.com/vaaleyard/gocatgo/
 `,
 		Scheme+"://"+r.Host)
