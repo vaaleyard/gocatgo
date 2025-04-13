@@ -104,13 +104,6 @@ func (app *App) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) Home(w http.ResponseWriter, r *http.Request) {
-	// I don't think there is a better way to do this
-	var Scheme string
-	if r.Header.Get("X-Forwarded-For") == "" {
-		Scheme = "http"
-	} else {
-		Scheme = r.Header.Get("X-Forwarded-Proto")
-	}
 	home := fmt.Sprintf(
 		`
    gocatgo: another cool pastebin.
@@ -135,7 +128,7 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
    * GoCatGo is open source:
         https://github.com/vaaleyard/gocatgo/
 `,
-		Scheme+"://"+r.Host)
+		r.Host)
 
 	fmt.Fprintf(w, "%s", home)
 }
