@@ -124,11 +124,11 @@ func (app *App) Home(w http.ResponseWriter, r *http.Request) {
      # Passing any string
        $ echo "some cool code" | curl -F "file=@-" %[1]s
 
-   * Alias:
+   * Function:
      # Run
-       $ echo "$(curl %[1]s/alias)" >> ~/.bashrc
+       $ echo "$(curl %[1]s/function)" >> ~/.bashrc
      # Use
-       $ cat file.txt | gcg
+       $ gcg file.txt
 
    * GoCatGo is open source, you check it here:
         https://github.com/vaaleyard/gocatgo/
