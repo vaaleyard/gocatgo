@@ -15,6 +15,12 @@ You can check its [uptime](https://status.gcg.sh/)! <br>
 GoCatGo provides a way of uploading a file to share with someone, you pass a file, and it returns a link. Simple as that!  
 With this short url, you can remember the links easily.
 
+# Preview
+<div align="center">
+  <img src="./preview.png" width="700">
+</div>
+
+
 ## Requirements
 It's a simple tool, you only need `curl`.
 
